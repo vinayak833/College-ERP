@@ -412,19 +412,7 @@ export const FeeManagementModule = ({
             </select>
           </div>
 
-          {/* Razorpay API Key Config Button */}
-          <button
-            type="button"
-            onClick={() => setShowKeyConfigModal(true)}
-            className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold transition-all cursor-pointer shadow-xs flex items-center gap-1.5 shrink-0"
-            title="Configure Razorpay API Keys for online payments"
-          >
-            <Key className="w-3.5 h-3.5 text-amber-400" />
-            <span>API Keys</span>
-            {customKeyId && (
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            )}
-          </button>
+
 
           {role === "ADMIN" && (
             <button
