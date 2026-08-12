@@ -238,6 +238,27 @@ router.post("/login", async (req, res) => {
       const reqRole = (role || "STUDENT").toUpperCase();
       const rawName = inputId.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
       const cleanEmail = inputId.includes("@") ? inputId : `${inputId}@studynet.edu.in`;
+      const username = inputId.split("@")[0].toLowerCase();
+
+      // Try to find a student or faculty that matches the username of the login identifier
+      let matchedStudent = null;
+      let matchedFaculty = null;
+      
+      if (isMongoConnected) {
+        matchedStudent = await StudentModel.findOne({
+          email: { $regex: new RegExp(`^${username}@`, "i") }
+        });
+        if (!matchedStudent) {
+          matchedFaculty = await FacultyModel.findOne({
+            email: { $regex: new RegExp(`^${username}@`, "i") }
+          });
+        }
+      } else {
+        matchedStudent = INITIAL_STUDENTS.find(s => s.email.toLowerCase().startsWith(username + "@"));
+        if (!matchedStudent) {
+          matchedFaculty = INITIAL_FACULTY.find(f => f.email.toLowerCase().startsWith(username + "@"));
+        }
+      }
 
       if (reqRole === "FACULTY" || inputId.includes("fac") || inputId.includes("prof") || inputId.includes("dr") || inputId.includes("turing")) {
         user = {
@@ -245,11 +266,18 @@ router.post("/login", async (req, res) => {
           email: cleanEmail,
           password: bcrypt.hashSync(inputPass || "faculty123", 10),
           role: "FACULTY",
-          name: rawName ? `Prof. ${rawName}` : "Faculty Member",
+          name: matchedFaculty ? matchedFaculty.name : (rawName ? `Prof. ${rawName}` : "Faculty Member"),
           linkedStudentId: "",
-          linkedFacultyId: "FAC-101"
+          linkedFacultyId: matchedFaculty ? matchedFaculty.id : "FAC-101"
         };
         memoryUsers.push(user);
+        
+        // If MongoDB is active, persist this dynamically provisioned user
+        if (isMongoConnected) {
+          try {
+            await UserModel.create(user);
+          } catch (e) { console.error("Error creating auto-provisioned faculty:", e); }
+        }
       } else if (reqRole === "ADMIN" || inputId.includes("admin")) {
         user = {
           id: `USR-ADM-${Date.now().toString().slice(-4)}`,
@@ -261,17 +289,31 @@ router.post("/login", async (req, res) => {
           linkedFacultyId: ""
         };
         memoryUsers.push(user);
+        
+        // If MongoDB is active, persist this dynamically provisioned user
+        if (isMongoConnected) {
+          try {
+            await UserModel.create(user);
+          } catch (e) { console.error("Error creating auto-provisioned admin:", e); }
+        }
       } else {
         user = {
           id: `USR-STU-${Date.now().toString().slice(-4)}`,
           email: cleanEmail,
           password: bcrypt.hashSync(inputPass || "student123", 10),
           role: "STUDENT",
-          name: rawName || "Student User",
-          linkedStudentId: "STU-001",
+          name: matchedStudent ? matchedStudent.name : (rawName || "Student User"),
+          linkedStudentId: matchedStudent ? matchedStudent.id : "STU-001",
           linkedFacultyId: ""
         };
         memoryUsers.push(user);
+        
+        // If MongoDB is active, persist this dynamically provisioned user
+        if (isMongoConnected) {
+          try {
+            await UserModel.create(user);
+          } catch (e) { console.error("Error creating auto-provisioned student:", e); }
+        }
       }
     }
 

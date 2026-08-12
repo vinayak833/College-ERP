@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import StudentModel from "../models/Student.js";
 import FacultyModel from "../models/Faculty.js";
+import UserModel from "../models/User.js";
 import CourseModel from "../models/Course.js";
 import GradeModel from "../models/Grade.js";
 import FeeModel from "../models/Fee.js";
@@ -53,8 +54,31 @@ export async function connectDB() {
         { $set: { avatarUrl: '/assets/student-avatar.svg' } }
       );
     }
+
+    // Migrate any legacy database records containing @studysync.edu.in domain to @studynet.edu.in
+    const legacyDomainRegex = /@studysync\.edu\.in$/i;
+    
+    const legacyStudents = await StudentModel.find({ email: legacyDomainRegex });
+    for (const student of legacyStudents) {
+      student.email = student.email.replace(/@studysync\.edu\.in$/i, "@studynet.edu.in");
+      await student.save();
+    }
+
+    const legacyFaculty = await FacultyModel.find({ email: legacyDomainRegex });
+    for (const faculty of legacyFaculty) {
+      faculty.email = faculty.email.replace(/@studysync\.edu\.in$/i, "@studynet.edu.in");
+      await faculty.save();
+    }
+
+    const legacyUsers = await UserModel.find({ email: legacyDomainRegex });
+    for (const user of legacyUsers) {
+      user.email = user.email.replace(/@studysync\.edu\.in$/i, "@studynet.edu.in");
+      await user.save();
+    }
+
     await seedUsersInMongo();
   } catch (err) {
+    console.error("❌ MongoDB connection/migration error details:", err);
     isMongoConnected = false;
     console.log("ℹ️ MongoDB connection not established or local instance unavailable.");
     console.log("ℹ️ Operating with fast in-memory store. Set MONGODB_URI to connect your MongoDB database.");
