@@ -1,0 +1,6 @@
+{
+  "name": "College ERP System",
+  "description": "Comprehensive College ERP System featuring student records, faculty management, course enrollment, grading, timetable, fee management, and dynamic QR attendance.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
