@@ -9,7 +9,7 @@ import {
 
 // Helper to inject Authorization header and handle auto-logout on 401
 async function authFetch(url, options = {}) {
-  const token = localStorage.getItem("erp_token");
+  const token = sessionStorage.getItem("erp_token");
   const headers = {
     ...options.headers
   };

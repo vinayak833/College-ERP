@@ -26,21 +26,21 @@ const isTokenExpired = (token) => {
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => {
-    const savedToken = localStorage.getItem("erp_token");
+    const savedToken = sessionStorage.getItem("erp_token");
     if (savedToken && !isTokenExpired(savedToken)) {
       return savedToken;
     }
-    localStorage.removeItem("erp_token");
-    localStorage.removeItem("erp_user");
+    sessionStorage.removeItem("erp_token");
+    sessionStorage.removeItem("erp_user");
     return null;
   });
 
   const [user, setUser] = useState(() => {
-    const savedToken = localStorage.getItem("erp_token");
+    const savedToken = sessionStorage.getItem("erp_token");
     if (!savedToken || isTokenExpired(savedToken)) {
       return null;
     }
-    const saved = localStorage.getItem("erp_user");
+    const saved = sessionStorage.getItem("erp_user");
     if (saved) {
       try { return JSON.parse(saved); } catch (e) { return null; }
     }
@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
 
     // 2. Periodic token validity check (every 30 seconds)
     const tokenCheckInterval = setInterval(() => {
-      const currentToken = localStorage.getItem("erp_token");
+      const currentToken = sessionStorage.getItem("erp_token");
       if (currentToken && isTokenExpired(currentToken)) {
         console.log("[Auth] Token expired, logging out...");
         logout();
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }) => {
     const resetInactivityTimer = () => {
       if (inactivityTimer) clearTimeout(inactivityTimer);
 
-      const currentToken = localStorage.getItem("erp_token");
+      const currentToken = sessionStorage.getItem("erp_token");
       if (currentToken) {
         inactivityTimer = setTimeout(() => {
           console.log("[Auth] User inactive, logging out...");
@@ -106,15 +106,15 @@ export const AuthProvider = ({ children }) => {
   const login = (newToken, newUser) => {
     setToken(newToken);
     setUser(newUser);
-    localStorage.setItem("erp_token", newToken);
-    localStorage.setItem("erp_user", JSON.stringify(newUser));
+    sessionStorage.setItem("erp_token", newToken);
+    sessionStorage.setItem("erp_user", JSON.stringify(newUser));
   };
 
   const logout = () => {
     setToken(null);
     setUser(null);
-    localStorage.removeItem("erp_token");
-    localStorage.removeItem("erp_user");
+    sessionStorage.removeItem("erp_token");
+    sessionStorage.removeItem("erp_user");
   };
 
   return (
