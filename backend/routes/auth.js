@@ -184,13 +184,20 @@ router.post("/login", async (req, res) => {
     }
 
     if (!user) {
-      user = memoryUsers.find((u) => u.email.toLowerCase() === inputId);
+      user = memoryUsers.find(
+        (u) =>
+          u.email.toLowerCase() === inputId ||
+          u.email.toLowerCase().startsWith(inputId + ".") ||
+          u.email.toLowerCase().startsWith(inputId + "@")
+      );
       if (!user) {
         const studentMatch = INITIAL_STUDENTS.find(
           (s) =>
             s.email.toLowerCase() === inputId ||
             s.rollNumber.toLowerCase() === inputId ||
-            s.id.toLowerCase() === inputId
+            s.id.toLowerCase() === inputId ||
+            s.email.toLowerCase().startsWith(inputId + ".") ||
+            s.email.toLowerCase().startsWith(inputId + "@")
         );
         if (studentMatch) {
           user = memoryUsers.find((u) => u.linkedStudentId === studentMatch.id || u.email === studentMatch.email);
@@ -213,7 +220,9 @@ router.post("/login", async (req, res) => {
           (f) =>
             f.email.toLowerCase() === inputId ||
             f.employeeId.toLowerCase() === inputId ||
-            f.id.toLowerCase() === inputId
+            f.id.toLowerCase() === inputId ||
+            f.email.toLowerCase().startsWith(inputId + ".") ||
+            f.email.toLowerCase().startsWith(inputId + "@")
         );
         if (facultyMatch) {
           user = memoryUsers.find((u) => u.linkedFacultyId === facultyMatch.id || u.email === facultyMatch.email);
@@ -264,7 +273,7 @@ router.post("/login", async (req, res) => {
         user = {
           id: `USR-FAC-${Date.now().toString().slice(-4)}`,
           email: cleanEmail,
-          password: bcrypt.hashSync(inputPass || "faculty123", 10),
+          password: bcrypt.hashSync("faculty123", 10),
           role: "FACULTY",
           name: matchedFaculty ? matchedFaculty.name : (rawName ? `Prof. ${rawName}` : "Faculty Member"),
           linkedStudentId: "",
@@ -282,7 +291,7 @@ router.post("/login", async (req, res) => {
         user = {
           id: `USR-ADM-${Date.now().toString().slice(-4)}`,
           email: cleanEmail,
-          password: bcrypt.hashSync(inputPass || "admin123", 10),
+          password: bcrypt.hashSync("admin123", 10),
           role: "ADMIN",
           name: "System Administrator",
           linkedStudentId: "",
@@ -300,7 +309,7 @@ router.post("/login", async (req, res) => {
         user = {
           id: `USR-STU-${Date.now().toString().slice(-4)}`,
           email: cleanEmail,
-          password: bcrypt.hashSync(inputPass || "student123", 10),
+          password: bcrypt.hashSync("student123", 10),
           role: "STUDENT",
           name: matchedStudent ? matchedStudent.name : (rawName || "Student User"),
           linkedStudentId: matchedStudent ? matchedStudent.id : "STU-001",
@@ -319,8 +328,7 @@ router.post("/login", async (req, res) => {
 
     const isMatch = await bcrypt.compare(inputPass, user.password);
     if (!isMatch) {
-      // If password comparison fails for a fallback/demo login attempt, auto-sync and allow login
-      user.password = bcrypt.hashSync(inputPass, 10);
+      return res.status(401).json({ error: "Invalid password." });
     }
 
     const tokenPayload = {

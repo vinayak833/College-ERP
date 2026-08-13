@@ -45,8 +45,8 @@ export const FeeManagementModule = ({
 
   // Custom Razorpay Keys State
   const [showKeyConfigModal, setShowKeyConfigModal] = useState(false);
-  const [customKeyId, setCustomKeyId] = useState(() => localStorage.getItem("rzp_custom_key_id") || "rzp_test_TLopZhrCgeEEqG");
-  const [customKeySecret, setCustomKeySecret] = useState(() => localStorage.getItem("rzp_custom_key_secret") || "Aw8d37f963OiOPiT3WUSszu1");
+  const [customKeyId, setCustomKeyId] = useState(() => localStorage.getItem("rzp_custom_key_id") || "");
+  const [customKeySecret, setCustomKeySecret] = useState(() => localStorage.getItem("rzp_custom_key_secret") || "");
   const [keySavedMessage, setKeySavedMessage] = useState("");
 
   // Razorpay Gateway Popup Modal State

@@ -6,8 +6,8 @@ import { processFeePayment } from "./fees.js";
 
 const router = express.Router();
 
-const DEFAULT_KEY_ID = "rzp_test_TLopZhrCgeEEqG";
-const DEFAULT_KEY_SECRET = "Aw8d37f963OiOPiT3WUSszu1";
+const DEFAULT_KEY_ID = "";
+const DEFAULT_KEY_SECRET = "";
 
 function getRazorpayInstance(customKeyId, customKeySecret) {
   const key_id = customKeyId || process.env.RAZORPAY_KEY_ID || DEFAULT_KEY_ID;
@@ -74,6 +74,7 @@ router.post("/create-order", verifyToken, requireRole("ADMIN", "STUDENT"), async
           keyId: configuredKeyId
         });
       } catch (rzpErr) {
+        console.error("Razorpay orders.create failed:", rzpErr);
         console.log("[Payment] Switched to simulated sandbox payment mode.");
         const mockOrderId = `order_test_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
         return res.json({
