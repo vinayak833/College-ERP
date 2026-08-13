@@ -19,8 +19,8 @@ import {
 
 export function LoginPage({ onLogin, students = [], facultyList = [] }) {
   const [selectedRole, setSelectedRole] = useState("STUDENT"); // "STUDENT" | "FACULTY" | "ADMIN"
-  const [identifier, setIdentifier] = useState("");
-  const [password, setPassword] = useState("");
+  const [identifier, setIdentifier] = useState("rohan.kulkarni@studynet.edu.in");
+  const [password, setPassword] = useState("student123");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -137,7 +137,8 @@ export function LoginPage({ onLogin, students = [], facultyList = [] }) {
                 type="button"
                 onClick={() => {
                   setSelectedRole("STUDENT");
-                  setIdentifier("");
+                  setIdentifier("rohan.kulkarni@studynet.edu.in");
+                  setPassword("student123");
                   setError("");
                 }}
                 className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
@@ -154,7 +155,8 @@ export function LoginPage({ onLogin, students = [], facultyList = [] }) {
                 type="button"
                 onClick={() => {
                   setSelectedRole("FACULTY");
-                  setIdentifier("");
+                  setIdentifier("ramesh.sharma@studynet.edu.in");
+                  setPassword("faculty123");
                   setError("");
                 }}
                 className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
@@ -171,7 +173,8 @@ export function LoginPage({ onLogin, students = [], facultyList = [] }) {
                 type="button"
                 onClick={() => {
                   setSelectedRole("ADMIN");
-                  setIdentifier("");
+                  setIdentifier("admin@studynet.edu.in");
+                  setPassword("admin123");
                   setError("");
                 }}
                 className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
