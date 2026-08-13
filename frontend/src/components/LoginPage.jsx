@@ -218,16 +218,16 @@ export function LoginPage({ onLogin, students = [], facultyList = [] }) {
                   onChange={(e) => setIdentifier(e.target.value)}
                   placeholder={
                     selectedRole === "STUDENT"
-                      ? "e.g. CS2023-042 or rohan.kulkarni@studynet.edu.in"
+                      ? "Demo: rohan.kulkarni@studynet.edu.in"
                       : selectedRole === "FACULTY"
-                      ? "e.g. EMP-CS-05 or faculty@studynet.edu.in"
-                      : "e.g. admin@studynet.edu.in"
+                      ? "Demo: ramesh.sharma@studynet.edu.in"
+                      : "Demo: admin@studynet.edu.in"
                   }
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:border-indigo-600 focus:bg-white transition-all placeholder:text-slate-400"
                 />
               </div>
             </div>
-
+ 
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="text-xs font-bold text-slate-700">Password</label>
@@ -247,7 +247,13 @@ export function LoginPage({ onLogin, students = [], facultyList = [] }) {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter security password"
+                  placeholder={
+                    selectedRole === "STUDENT"
+                      ? "Demo password: student123"
+                      : selectedRole === "FACULTY"
+                      ? "Demo password: faculty123"
+                      : "Demo password: admin123"
+                  }
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 text-xs font-medium rounded-xl pl-10 pr-10 py-3 focus:outline-none focus:border-indigo-600 focus:bg-white transition-all placeholder:text-slate-400"
                 />
                 <button
