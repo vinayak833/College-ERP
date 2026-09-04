@@ -1,82 +1,287 @@
-# 🎓 StudyNet College ERP - Separated Full-Stack Architecture
+# 🎓 StudyNet ERP - Modern College & University Management Portal
 
-This project is organized into clean, modular **Frontend** and **Backend** directories for easy development in VS Code, standalone API testing, and deployment.
+
+StudyNet ERP is a full-featured College and University Enterprise Resource Planning (ERP) platform built using **React 19**, **Vite**, **Node.js**, **Express.js**, and **MongoDB**. The system provides dedicated portals for Administrators, Faculty, and Students to manage academic activities, attendance, fees, assignments, schedules, and institutional operations through a centralized platform.
 
 ---
 
-## 📁 Directory Architecture
+## 🌟 Features
 
-```
-├── frontend/                 # 🔵 React / Tailwind CSS Frontend App
-│   ├── src/                  # React UI Components, Pages, Services
-│   │   ├── components/       # Student Records, Dynamic QR Attendance, etc.
-│   │   ├── services/         # API Integration Services
-│   │   ├── App.jsx           # Main React Application
-│   │   └── main.jsx          # DOM Entry Point
-│   ├── index.html            # Vite HTML Template
-│   ├── package.json          # Standalone Frontend Dependencies
-│   └── vite.config.js        # Vite Configuration
+### 🛡️ Role-Based Access Control (RBAC)
+
+#### Administrator Portal
+- Manage students, faculty, departments, and courses
+- Monitor fee collections and academic records
+- Publish campus-wide announcements
+- Access institution-wide reports
+
+#### Faculty Portal
+- View teaching schedules
+- Conduct attendance sessions
+- Manage assignments and grading
+- Track student performance
+
+#### Student Portal
+- View enrolled courses
+- Track attendance and GPA
+- Pay academic fees
+- Submit assignments
+- Access notices and announcements
+
+---
+
+## 📚 Academic Management
+
+### Student Records
+- Student directory
+- Search and filtering
+- Semester tracking
+- Profile management
+
+### Faculty Management
+- Faculty directory
+- Department details
+- Office hours management
+
+### Course Management
+- Course catalog
+- Credit allocation
+- Enrollment tracking
+- Prerequisite management
+
+### Grading & GPA
+- Assignment grading
+- Internal and final assessments
+- Automated GPA calculation
+- Transcript generation
+
+---
+
+## 📍 Smart Attendance System
+
+### Dynamic Geofenced QR Attendance
+- Dynamic QR tokens with expiration
+- Geofence validation using Haversine Formula
+- Real-time attendance verification
+- Instant attendance confirmation
+
+### Benefits
+- Reduces proxy attendance
+- Location-based validation
+- Secure attendance tracking
+
+---
+
+## 💳 Fee Management
+
+- Tuition fee tracking
+- Library fee management
+- Examination fee tracking
+- Lab fee tracking
+- Razorpay payment integration
+- Digital receipt generation
+
+---
+
+## 📅 Timetable Management
+
+- Weekly schedule view
+- Classroom allocation
+- Faculty schedules
+- Course timetable management
+
+---
+
+## 📝 Assignment Management
+
+- Assignment creation
+- Student submissions
+- Faculty feedback
+- Marks management
+
+---
+
+## 📚 Library Management
+
+- Book catalog
+- Issue and return tracking
+- Fine calculation
+- Search functionality
+
+---
+
+## 🏠 Hostel & Transport Management
+
+- Hostel room allocation
+- Student accommodation records
+- Transport pass management
+
+---
+
+## 🎉 Events & Clubs
+
+- Event announcements
+- Student registrations
+- Club activities
+- Campus engagement programs
+
+---
+
+## 📢 Notice Board
+
+- Real-time announcements
+- Important notifications
+- Read and unread tracking
+- Emergency alerts
+
+---
+
+## 📋 Demo Credentials
+
+| Role | Email | Password |
+|--------|--------|--------|
+| Admin | admin@studynet.edu.in | admin123 |
+| Faculty | ramesh.sharma@studynet.edu.in | faculty123 |
+| Faculty | ananya.iyer@studynet.edu.in | faculty123 |
+| Student | priya.sharma@studynet.edu.in | student123 |
+| Student | rohan.kulkarni@studynet.edu.in | student123 |
+
+> Quick Demo Login buttons are available on the login page for easy access.
+
+---
+
+## 📁 Project Structure
+
+```text
+StudyNet-ERP/
 │
-├── backend/                  # 🟢 Node.js / Express / MongoDB Backend API
+├── backend/
+│   ├── config/
+│   ├── data/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── app.js
+│   └── server.js
 │
-├── server.js                 # Unified launcher for full-stack deployment
-├── package.json              # Full project root dependencies
-└── README.md                 # Setup & Deployment documentation
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── context/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── index.html
+│   └── vite.config.js
+│
+├── package.json
+├── server.js
+└── .env.example
 ```
 
 ---
 
-## 💻 How to Run Locally in VS Code
+## 🚀 Technology Stack
 
-### Option 1: Run Backend & Frontend Separately in VS Code
+### Frontend
+- React 19
+- Vite
+- Tailwind CSS
+- React Context API
 
-1. **Start the Backend:**
-   ```bash
-   cd backend
-   npm install
-   # Ensure MongoDB is running locally (e.g., mongodb://localhost:27017/college_erp)
-   npm start
-   ```
-   *The backend will run on `http://localhost:5000` and automatically seed your MongoDB database with sample ERP records if empty.*
+### Backend
+- Node.js
+- Express.js
+- JWT Authentication
 
-2. **Start the Frontend:**
-   Open a second terminal window in VS Code:
-   ```bash
-   npm install
-   npm run dev
-   ```
-   *The app will open at `http://localhost:3000`.*
+### Database
+- MongoDB
+- Mongoose
 
----
-
-## 🍃 MongoDB Connection Options
-
-Edit `backend/.env.example` or set `MONGODB_URI`:
-- **Local MongoDB Community Server:** `mongodb://localhost:27017/college_erp`
-- **MongoDB Atlas Cloud:** `mongodb+srv://<username>:<password>@cluster.mongodb.net/college_erp?retryWrites=true&w=majority`
-
-*(Note: If MongoDB is unavailable or disconnected, the backend gracefully operates in fast local in-memory fallback mode!)*
+### Payment Gateway
+- Razorpay
 
 ---
 
-## 🚀 Deployment Instructions
+## 💻 Local Development Setup
 
-### Deploying to Cloud Run / Vercel / Render / Railway
+### Prerequisites
 
-- **Start Command:** `npm start` (Runs `node dist/server.cjs`)
-- **Build Command:** `npm run build`
-- **Port:** `3000`
-- **Environment Variables:**
-  - `MONGODB_URI` = `your_mongodb_connection_string`
-  - `GEMINI_API_KEY` = *(Optional, for online AI academic suggestions)*
+- Node.js v18 or later
+- npm v9 or later
+- MongoDB (Optional)
+
+### Clone Repository
+
+```bash
+git clone https://github.com/your-username/studynet-erp.git
+
+cd studynet-erp
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Configure Environment Variables
+
+Create a `.env` file:
+
+```bash
+cp .env.example .env
+```
+
+Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Example:
+
+```env
+PORT=5000
+
+MONGO_URI=mongodb://localhost:27017/studynet_erp
+
+JWT_SECRET=your_secret_key
+
+RAZORPAY_KEY_ID=your_key_id
+
+RAZORPAY_KEY_SECRET=your_secret
+```
+
+### Run Development Server
+
+```bash
+npm run dev
+```
+
+Application URL:
+
+```text
+http://localhost:3000
+```
 
 ---
 
-## ⚡ API Endpoint Cheat Sheet
+## 🔒 Security Features
 
-- `GET /api/students` - Retrieve all student records
-- `POST /api/students` - Create a new student record
-- `GET /api/courses` - List all courses & enrollments
-- `POST /api/attendance/session/start` - Initiate a dynamic QR attendance session
-- `POST /api/attendance/scan` - Validate student dynamic QR scanner token
-- `POST /api/ai/advisor` - Request AI Academic Advisor performance evaluation
+- JWT Authentication
+- Role-Based Authorization
+- Protected Routes
+- Dynamic QR Attendance Tokens
+- Geofence Validation
+- Secure Payment Verification
+
+---
+
+## 👨‍💻 Author
+
+**Vinayak S**  
+
+
+**StudyNet ERP – College & University Management System**
